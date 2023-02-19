@@ -40,25 +40,24 @@ def login():
         service = build('calendar', 'v3', credentials=creds)
 
         # Current date and time
-        now = datetime.datetime.now()
-        today = datetime.datetime.today()
-
-        eventtime = None
+        #now = datetime.datetime.utcnow().isoformat()+'Z'
+        now = datetime.datetime.utcnow()
+        #today = datetime.datetime.today()
 
         # Fetch from Calendar API
-        events_result = service.events().list(calendarId='primary', timeMin=eventtime,
-                                              maxResults=1, singleEvents=True,
+        events_result = service.events().list(calendarId='primary', timeMin=now.isoformat()+'Z',
+                                              maxResults=10, singleEvents=True,
                                               orderBy='startTime').execute()
-        events = events_result.get('items', [])
+        events = [x for x in events_result.get('items', []) if 'T' in x['start'].get('dateTime', x['start'].get('date'))]
 
         if not events:
             print('No upcoming events found.')
             return
 
         for event in events:
-            print("hello")
             start = event['start'].get('dateTime', event['start'].get('date'))
-            print(start, event['summary'])
+            end = event['end'].get('dateTime', event['end'].get('date'))
+            print(start, end, event['summary'], "Tim until:", datetime.strptime(start, '%y-%m-%dT%H:%M:%S'))
 
     except HttpError as error:
         print('An error occurred: %s' % error)
