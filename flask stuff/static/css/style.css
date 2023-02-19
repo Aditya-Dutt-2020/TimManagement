@@ -1,0 +1,11 @@
+h1 {
+    border: 5px rgb(0, 0, 0) solid;
+    color: burlywood;
+    text-align: center;
+    padding: 10px;
+}
+
+p {
+    color: brown;
+    text-align: center;
+}
