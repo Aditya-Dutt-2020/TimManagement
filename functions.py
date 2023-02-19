@@ -21,6 +21,7 @@ def main():
     # The file token.json stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
     # time.
+
     if os.path.exists('token.json'):
         creds = Credentials.from_authorized_user_file('token.json', SCOPES)
     # If there are no (valid) credentials available, let the user log in.
@@ -30,7 +31,7 @@ def main():
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
                 'credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
+            creds = flow.run_local_server(host='localhost', port=8080)
         # Save the credentials for the next run
         with open('token.json', 'w') as token:
             token.write(creds.to_json())
@@ -62,11 +63,11 @@ def main():
 if __name__ == '__main__':
     main()
 
-def event_detector():
-    print("Hello")
-    return
+#def event_detector():
+  #  print("Hello")
+  #  return
 
-def time_difference():
-    print("Hello")
-    return
+#def time_difference():
+  #  print("Hello")
+  #  return
 
