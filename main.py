@@ -33,12 +33,19 @@ class Timmy:
         for x in range(0,2):
             img = Image.open(f'Assets/tim/tim_walking/sprite_{str(x).zfill(1)}.png')
             self.walk.append(ImageTk.PhotoImage(Image.merge('RGBA', [b.resize((250,250), Image.LINEAR) for b in img.split()])))
-
+            
+        self.walkBack = []
+        for x in range(0,2):
+            img = Image.open(f'Assets/tim/tim_walking/sprite_{str(x).zfill(1)}.png')
+            self.walkBack.append(ImageTk.PhotoImage(Image.merge('RGBA', [b.resize((250,250), Image.LINEAR) for b in img.split()]).transpose(Image.FLIP_LEFT_RIGHT)))
         self.logWalk = []
         for x in range(1,3):
             img = Image.open(f'Assets/tim/tim_log/tim_log{str(x).zfill(1)}.png')
             self.logWalk.append(ImageTk.PhotoImage(Image.merge('RGBA', [b.resize((300,300), Image.LINEAR) for b in img.split()])))
-
+        self.dam = []
+        for x in range(0,4):
+            img = Image.open(f'Assets/tim/tim_dam/sprite_{str(x).zfill(1)}.png')
+            self.dam.append(ImageTk.PhotoImage(Image.merge('RGBA', [b.resize((250,250), Image.LINEAR) for b in img.split()])))
         self.xPos=int(screen_width*0.8)
         self.yPos=work_height-130
         self.doingSomething = False
@@ -135,8 +142,8 @@ class Timmy:
             if not(eventNumber in idle):
                 self.doingSomething = False
             self.initFrame = 0
-            #if self.eventNumber == 1:
-            #    self.eventNumber=1
+            if self.eventNumber in [1,12]:
+                self.eventNumber=1
         if self.eventNumber==17 or self.eventNumber==31 and self.xPos <= screen_width:
             self.xPos+=10
         if self.eventNumber==26 or self.eventNumber==32 and self.xPos >= int(screen_width*0.8):
@@ -161,8 +168,8 @@ class Timmy:
             self.frame = self.logWalk[self.initFrame]
             self.initFrame, self.eventNumber = self.animate(self.initFrame, self.logWalk, self.eventNumber, 1,1)
         if state == 6:
-            self.frame = self.walk[self.initFrame]
-            self.initFrame, self.eventNumber = self.animate(self.initFrame, self.logWalk, self.eventNumber, 1, 1)
+            self.frame = self.walkBack[self.initFrame]
+            self.initFrame, self.eventNumber = self.animate(self.initFrame, self.walkBack, self.eventNumber, 1, 1)
         self.window.geometry(f'{self.frame.width()}x{self.frame.height()}+'+str(self.xPos)+'+'+str(self.yPos))
         #self.window.geometry('72x64+'+str(self.xPos)+'+'+str(self.yPos))
         self.label.configure(image=self.frame)
