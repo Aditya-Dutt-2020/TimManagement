@@ -201,7 +201,5 @@ class Timmy:
         print("running event with eventnumber=", self.eventNumber)
         self.window.after(1, self.event, self.initFrame, self.state, self.eventNumber, self.xPos)
 
-    
-#timmy = Timmy()
-if __name__ == '__main__':
-    Timmy()
+def run_tim():
+    timmy = Timmy()
