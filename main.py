@@ -1,4 +1,5 @@
 import tkinter as tk
+from PIL import Image,ImageTk
 import time
 import random
 from random import randint
@@ -14,11 +15,10 @@ idle = range(1,11)
 class Timmy:
     def __init__(self):
         self.window = tk.Tk()
-        self.idle=[tk.PhotoImage(file=f'Assets/dog/sprite_{str(x).zfill(2)}.png') for x in range(11)]
-        for count, x in enumerate(self.idle):
-            x.write(f'{count}.gif', format='gif')
-        self.xPos=int(screen_width*0.6)
-        self.yPos=work_height-800
+        #self.idle=[tk.PhotoImage(file=f'Assets/dog/dog_sprite{str(x).zfill(2)}.png').resize for x in range(11)]
+        self.idle = [ImageTk.PhotoImage(Image.open(f'Assets/dog/dog_sprite{str(x).zfill(2)}.png').resize((100,100), Image.ANTIALIAS)) for x in range(11)]
+        self.xPos=int(screen_width*0.8)
+        self.yPos=work_height-70
 
         self.initFrame= 0
         self.state = 1
@@ -35,9 +35,10 @@ class Timmy:
         self.window.after(1, self.updateFrame, self.initFrame, self.state, self.eventNumber, self.xPos)
         self.window.mainloop()
     def event(self, initFrame, state, eventNumber, xPos):
+        
         if self.eventNumber in idle:
-            self.state = 0
-            self.window.after(400, self.updateFrame, self.initFrame, self.state, self.eventNumber, self.xPos)
+            self.state = 1
+            self.window.after(83, self.updateFrame, self.initFrame, self.state, self.eventNumber, self.xPos)
     def animate(self, initFrame, animation, eventNumber, x, y):
         if self.initFrame<len(animation)-1:
             self.initFrame+=1
@@ -47,11 +48,12 @@ class Timmy:
         return self.initFrame, self.eventNumber
     
     def updateFrame(self, initFrame, state, eventNumber, xPos):
+        
         if state == 1:
             self.frame = self.idle[self.initFrame]
             self.initFrame, self.eventNumber=self.animate(self.initFrame, self.idle, self.eventNumber, 1, 1)
 
-        self.window.geometry('500x400+'+str(self.xPos)+'+'+str(self.yPos))
+        self.window.geometry('100x100+'+str(self.xPos)+'+'+str(self.yPos))
         self.label.configure(image=self.frame)
         self.window.after(1, self.event, self.initFrame, self.state, self.eventNumber, self.xPos)
 
