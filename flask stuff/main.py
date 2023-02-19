@@ -87,21 +87,25 @@ class Timmy:
         self.initFrame = 0
         self.eventNumber = 30
         self.window.after(3000, self.logWalkBack)
+
     def logWalkBack(self):
         print("walking off")
         self.initFrame = 0
         self.eventNumber = 31
         self.window.after(6500, self.transToWalk)
+
     def transToWalk(self):
         print("walking on")
         self.initFrame = 0
         self.eventNumber = 32
         self.window.after(6000, self.backToIdle)
+
     def backToIdle(self):
         print("idle")
         self.doingSomething = False
         self.initFrame = 0
         self.eventNumber=1
+        
     def event(self, initFrame, state, eventNumber, xPos):        
         if self.eventNumber in idle and not self.doingSomething:
             self.state = 1
