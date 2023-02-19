@@ -30,7 +30,7 @@ def login():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
+                'C:/Users/dutta/Desktop/Hackmit/TimManagement/flask stuff/credentials.json', SCOPES)
             creds = flow.run_local_server(host='localhost', port=8080)
         # Save the credentials for the next run
         with open('token.json', 'w') as token:
@@ -41,11 +41,11 @@ def login():
 
         # Current date and time
         #now = datetime.datetime.utcnow().isoformat()+'Z'
-        now = datetime.datetime.utcnow()
+        now = datetime.datetime.now()
         #today = datetime.datetime.today()
 
         # Fetch from Calendar API
-        events_result = service.events().list(calendarId='primary', timeMin=now.isoformat()+'Z',
+        events_result = service.events().list(calendarId='primary', timeMin=now.utcnow().isoformat()+'Z',
                                               maxResults=10, singleEvents=True,
                                               orderBy='startTime').execute()
         events = [x for x in events_result.get('items', []) if 'T' in x['start'].get('dateTime', x['start'].get('date'))]
@@ -55,9 +55,9 @@ def login():
             return
 
         for event in events:
-            start = event['start'].get('dateTime', event['start'].get('date'))
+            start = event['start'].get('dateTime', event['start'].get('date'))[:19]
             end = event['end'].get('dateTime', event['end'].get('date'))
-            print(start, end, event['summary'], "Tim until:", datetime.strptime(start, '%y-%m-%dT%H:%M:%S'))
+            print(datetime.datetime.strptime(start, '%Y-%m-%dT%H:%M:%S').utcnow(), now, event['summary'], "Tim until:",datetime.datetime.strptime(start, '%Y-%m-%dT%H:%M:%S')-now)
 
     except HttpError as error:
         print('An error occurred: %s' % error)
