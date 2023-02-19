@@ -14,6 +14,7 @@ idle = range(1,11)
 heart = range(12,15)
 walk = range(16,25)
 log = range(26,28)
+
 class Timmy:
     def __init__(self):
         self.window = tk.Tk()
@@ -193,4 +194,7 @@ class Timmy:
         self.window.after(1, self.event, self.initFrame, self.state, self.eventNumber, self.xPos)
 
 def run_tim():
-    timmy = Timmy()
+    return Timmy()
+
+def close_tim(timmy):
+    timmy.window.quit()

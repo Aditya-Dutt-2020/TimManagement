@@ -1,11 +1,29 @@
-h1 {
-    border: 5px rgb(0, 0, 0) solid;
-    color: burlywood;
+.h1 {
+    border: 100px rgb(132, 32, 32) solid;
+    color: rgb(29, 28, 27);
     text-align: center;
     padding: 10px;
 }
 
-p {
+.h3 {
     color: brown;
     text-align: center;
 }
+
+.button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
+
+  .center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+  }

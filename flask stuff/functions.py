@@ -66,11 +66,3 @@ def login():
 if __name__ == '__main__':
     login()
 
-#def event_detector():
-  #  print("Hello")
-  #  return
-
-#def time_difference():
-  #  print("Hello")
-  #  return
-

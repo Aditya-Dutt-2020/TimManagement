@@ -3,16 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
-    <img src="Time Management.png"></img>
 </head>
 <body>
-   <h1>Tim Management</h1>
-   <p> Finding it hard to manage your tasks? Here's a cute beaver to help you out! </p>
-   <img src="{{ user_image }}" style="width:100px;height:100px;"></img>
+   <h1>Tim(e) Management</h1>
+   <h3> Finding it hard to manage your tasks? Here's a cute beaver to help you out! </h3>
+   <img src="{{ user_image }}" style="width:300px;height:300px;" class="center"></img>
 
    <form method="post" action="/">
         <button type="submit" name="Run Tim!" value="VALUE1">Run Tim!</button>
-        <button type="submit" name="Close Tim!" value="VALUE2">Close Tim</button>
     </form>
 
 </body>
