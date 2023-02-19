@@ -73,13 +73,33 @@ class Timmy:
         print("transed")
         self.initFrame = 0
         self.eventNumber = 26
-        
-
+        self.window.after(6000, self.freeze)
+    
+    def freeze(self):
+        print("froze")
+        self.initFrame = 0
+        self.eventNumber = 30
+        self.window.after(3000, self.logWalkBack)
+    def logWalkBack(self):
+        print("walking off")
+        self.initFrame = 0
+        self.eventNumber = 31
+        self.window.after(6500, self.transToWalk)
+    def transToWalk(self):
+        print("walking on")
+        self.initFrame = 0
+        self.eventNumber = 32
+        self.window.after(6000, self.backToIdle)
+    def backToIdle(self):
+        print("idle")
+        self.doingSomething = False
+        self.initFrame = 0
+        self.eventNumber=1
     def event(self, initFrame, state, eventNumber, xPos):        
         if self.eventNumber in idle and not self.doingSomething:
             self.state = 1
             self.yPos = work_height-self.frame.height()
-            self.window.after(300, self.updateFrame, self.initFrame, self.state, self.eventNumber, self.xPos)
+            self.window.after(700, self.updateFrame, self.initFrame, self.state, self.eventNumber, self.xPos)
         if self.eventNumber in heart:
             self.state = 2
             self.yPos = work_height-self.frame.height()
@@ -92,19 +112,34 @@ class Timmy:
             self.state = 4
             self.yPos = work_height-self.frame.height()
             self.window.after(200, self.updateFrame, self.initFrame, self.state, self.eventNumber, self.xPos)
+        if self.eventNumber==30:
+            print("event is 30")
+            self.state = -10
+            self.window.after(1, self.updateFrame, self.initFrame, self.state, self.eventNumber, self.xPos)
+        if self.eventNumber == 31:
+            print("event is 31")
+            self.state = 5
+            self.yPos = work_height-self.frame.height()
+            self.window.after(200, self.updateFrame, self.initFrame, self.state, self.eventNumber, self.xPos)
+        if self.eventNumber == 32:
+            print("event is 32")
+            self.state = 6
+            self.yPos = work_height-self.frame.height()
+            self.window.after(200, self.updateFrame, self.initFrame, self.state, self.eventNumber, self.xPos)
             
     def animate(self, initFrame, animation, eventNumber, x, y):
+        print(f"animating with initFrame={self.initFrame}")
         if self.initFrame<len(animation)-1:
             self.initFrame+=1
         else:
             if not(eventNumber in idle):
                 self.doingSomething = False
             self.initFrame = 0
-            if self.eventNumber not in [17,26]:
-                self.eventNumber=1
-        if self.eventNumber==17 and self.xPos <= screen_width:
+            #if self.eventNumber == 1:
+            #    self.eventNumber=1
+        if self.eventNumber==17 or self.eventNumber==31 and self.xPos <= screen_width:
             self.xPos+=10
-        if self.eventNumber==26 and self.xPos >= int(screen_width*0.8):
+        if self.eventNumber==26 or self.eventNumber==32 and self.xPos >= int(screen_width*0.8):
             self.xPos-=10
         return self.initFrame, self.eventNumber
     
@@ -122,9 +157,16 @@ class Timmy:
         if state == 4:
             self.frame = self.logWalk[self.initFrame]
             self.initFrame, self.eventNumber = self.animate(self.initFrame, self.logWalk, self.eventNumber, 1,1)
+        if state == 5:
+            self.frame = self.logWalk[self.initFrame]
+            self.initFrame, self.eventNumber = self.animate(self.initFrame, self.logWalk, self.eventNumber, 1,1)
+        if state == 6:
+            self.frame = self.walk[self.initFrame]
+            self.initFrame, self.eventNumber = self.animate(self.initFrame, self.logWalk, self.eventNumber, 1, 1)
         self.window.geometry(f'{self.frame.width()}x{self.frame.height()}+'+str(self.xPos)+'+'+str(self.yPos))
         #self.window.geometry('72x64+'+str(self.xPos)+'+'+str(self.yPos))
         self.label.configure(image=self.frame)
+        print("running event with eventnumber=", self.eventNumber)
         self.window.after(1, self.event, self.initFrame, self.state, self.eventNumber, self.xPos)
 
     
