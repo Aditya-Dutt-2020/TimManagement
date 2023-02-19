@@ -20,8 +20,8 @@ class Timmy:
         #self.idle=[tk.PhotoImage(file=f'Assets/dog/dog_sprite{str(x).zfill(2)}.png').resize for x in range(11)]
         #self.idle = [ImageTk.PhotoImage(Image.open(f'Assets/tim/tim_hearts/tim_hearts_fixed{str(x).zfill(1)}.png').resize((500,500))) for x in range(3)]
         self.idle = []
-        for x in range(4):
-            img = Image.open(f'Assets/tim/tim_idle/tim_idle{str(x).zfill(1)}.png')
+        for x in range(38):
+            img = Image.open(f'Assets/tim/tim_long_idle/sprite_{str(x).zfill(2)}.png')
             self.idle.append(ImageTk.PhotoImage(Image.merge('RGBA', [b.resize((250,250), Image.LINEAR) for b in img.split()])))
 
         self.heart = []
@@ -43,9 +43,9 @@ class Timmy:
             img = Image.open(f'Assets/tim/tim_log/tim_log{str(x).zfill(1)}.png')
             self.logWalk.append(ImageTk.PhotoImage(Image.merge('RGBA', [b.resize((300,300), Image.LINEAR) for b in img.split()])))
         self.dam = []
-        for x in range(0,4):
+        for x in range(0,10):
             img = Image.open(f'Assets/tim/tim_dam/sprite_{str(x).zfill(1)}.png')
-            self.dam.append(ImageTk.PhotoImage(Image.merge('RGBA', [b.resize((250,250), Image.LINEAR) for b in img.split()])))
+            self.dam.append(ImageTk.PhotoImage(Image.merge('RGBA', [b.resize((200,200), Image.LINEAR) for b in img.split()])))
         self.xPos=int(screen_width*0.8)
         self.yPos=work_height-130
         self.doingSomething = False
@@ -66,6 +66,11 @@ class Timmy:
         self.window.mainloop()
 
     def testing(self, event):
+        self.initFrame = 0
+        self.doingSomething = True
+        self.eventNumber = 40
+
+    def backlog(self, event):
         self.initFrame = 0
         self.doingSomething = True
         self.eventNumber = 17
@@ -115,6 +120,10 @@ class Timmy:
             self.state = 2
             self.yPos = work_height-self.frame.height()
             self.window.after(300, self.updateFrame, self.initFrame, self.state, self.eventNumber, self.xPos)
+        if self.eventNumber == 40:
+            self.state = 7
+            self.yPos = work_height-self.frame.height()
+            self.window.after(1000, self.updateFrame, self.initFrame, self.state, self.eventNumber, self.xPos)
         if self.eventNumber in walk:
             self.state = 3
             self.yPos = work_height-self.frame.height()
@@ -146,7 +155,7 @@ class Timmy:
             if not(eventNumber in idle):
                 self.doingSomething = False
             self.initFrame = 0
-            if self.eventNumber in [1,12]:
+            if self.eventNumber in [1,12, 40]:
                 self.eventNumber=1
         if self.eventNumber==17 or self.eventNumber==31 and self.xPos <= screen_width:
             self.xPos+=10
@@ -174,6 +183,9 @@ class Timmy:
         if state == 6:
             self.frame = self.walkBack[self.initFrame]
             self.initFrame, self.eventNumber = self.animate(self.initFrame, self.walkBack, self.eventNumber, 1, 1)
+        if state == 7:
+            self.frame = self.dam[self.initFrame]
+            self.initFrame, self.eventNumber = self.animate(self.initFrame, self.dam, self.eventNumber, 1,1)
         self.window.geometry(f'{self.frame.width()}x{self.frame.height()}+'+str(self.xPos)+'+'+str(self.yPos))
         #self.window.geometry('72x64+'+str(self.xPos)+'+'+str(self.yPos))
         self.label.configure(image=self.frame)
