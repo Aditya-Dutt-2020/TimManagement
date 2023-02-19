@@ -74,11 +74,3 @@ if __name__ == '__main__':
 
 
 
-#def event_detector():
-  #  print("Hello")
-  #  return
-
-#def time_difference():
-  #  print("Hello")
-  #  return
-
