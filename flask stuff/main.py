@@ -4,7 +4,7 @@ import time
 import random
 from random import randint
 from win32api import GetMonitorInfo, MonitorFromPoint
-
+import functions
 monitor_info=GetMonitorInfo(MonitorFromPoint((0, 0)))
 work_area=monitor_info.get('Work')
 screen_width=work_area[2]
@@ -16,10 +16,12 @@ walk = range(16,25)
 log = range(26,28)
 class Timmy:
     def __init__(self):
+        functions.login()
         self.window = tk.Tk()
         #self.idle=[tk.PhotoImage(file=f'Assets/dog/dog_sprite{str(x).zfill(2)}.png').resize for x in range(11)]
         #self.idle = [ImageTk.PhotoImage(Image.open(f'Assets/tim/tim_hearts/tim_hearts_fixed{str(x).zfill(1)}.png').resize((500,500))) for x in range(3)]
         self.idle = []
+        self.triggered = False
         for x in range(38):
             img = Image.open(f'Assets/tim/tim_long_idle/sprite_{str(x).zfill(2)}.png')
             self.idle.append(ImageTk.PhotoImage(Image.merge('RGBA', [b.resize((250,250), Image.LINEAR) for b in img.split()])))
@@ -61,16 +63,16 @@ class Timmy:
         self.window.attributes('-topmost', True)
         self.window.wm_attributes('-transparentcolor','black')
         self.label.pack()
-        self.window.bind('<Button-1>', self.testing)
+        self.window.bind('<Button-1>', self.pet)
         self.window.after(1, self.updateFrame, self.initFrame, self.state, self.eventNumber, self.xPos)
         self.window.mainloop()
 
-    def testing(self, event):
+    def fiveMin(self):
         self.initFrame = 0
         self.doingSomething = True
         self.eventNumber = 40
 
-    def backlog(self, event):
+    def backlog(self):
         self.initFrame = 0
         self.doingSomething = True
         self.eventNumber = 17
@@ -110,7 +112,8 @@ class Timmy:
         self.doingSomething = False
         self.initFrame = 0
         self.eventNumber=1
-        
+    def unTrigger(self):
+        self.triggered = False
     def event(self, initFrame, state, eventNumber, xPos):        
         if self.eventNumber in idle and not self.doingSomething:
             self.state = 1
@@ -164,7 +167,13 @@ class Timmy:
         return self.initFrame, self.eventNumber
     
     def updateFrame(self, initFrame, state, eventNumber, xPos):
-        
+        print(functions.getNextDeadline().seconds)
+        if functions.getNextDeadline().seconds <= 300 and not self.triggered:
+            self.fiveMin()
+            self.triggered = True
+        if functions.getNextDeadline().seconds ==1:
+            self.backlog()
+            self.window.after(10000, self.unTrigger)
         if state == 1 and not self.doingSomething:
             self.frame = self.idle[self.initFrame]
             self.initFrame, self.eventNumber=self.animate(self.initFrame, self.idle, self.eventNumber, 1, 1)
@@ -193,4 +202,6 @@ class Timmy:
         self.window.after(1, self.event, self.initFrame, self.state, self.eventNumber, self.xPos)
 
     
-timmy = Timmy()
+#timmy = Timmy()
+if __name__ == '__main__':
+    Timmy()

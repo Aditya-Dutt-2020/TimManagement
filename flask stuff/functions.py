@@ -11,9 +11,10 @@ from googleapiclient.errors import HttpError
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
-
+global events
 
 def login():
+    global events
     """Shows basic usage of the Google Calendar API.
     Prints the start and name of the next 10 events on the user's calendar.
     """
@@ -54,17 +55,24 @@ def login():
             print('No upcoming events found.')
             return
 
-        for event in events:
-            start = event['start'].get('dateTime', event['start'].get('date'))[:19]
-            end = event['end'].get('dateTime', event['end'].get('date'))
-            print(datetime.datetime.strptime(start, '%Y-%m-%dT%H:%M:%S').utcnow(), now, event['summary'], "Tim until:",datetime.datetime.strptime(start, '%Y-%m-%dT%H:%M:%S')-now)
-
+        
     except HttpError as error:
         print('An error occurred: %s' % error)
+
+def getNextDeadline():
+    now = datetime.datetime.now()
+    event = events[0]
+    start = event['start'].get('dateTime', event['start'].get('date'))[:19]
+    end = event['end'].get('dateTime', event['end'].get('date'))
+    #print(datetime.datetime.strptime(start, '%Y-%m-%dT%H:%M:%S').utcnow(), now, event['summary'], "Tim until:",datetime.datetime.strptime(start, '%Y-%m-%dT%H:%M:%S')-now)
+    return datetime.datetime.strptime(start, '%Y-%m-%dT%H:%M:%S')-now
 
 
 if __name__ == '__main__':
     login()
+    getNextDeadline()
+
+
 
 #def event_detector():
   #  print("Hello")
