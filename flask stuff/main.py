@@ -169,7 +169,7 @@ class Timmy:
     
     def updateFrame(self, initFrame, state, eventNumber, xPos):
         print(functions.getNextDeadline().seconds)
-        if functions.getNextDeadline().seconds <= 300 and not self.triggered:
+        if functions.getNextDeadline().seconds <= 60 and not self.triggered:
             self.fiveMin()
             self.triggered = True
         if functions.getNextDeadline().seconds ==1:
